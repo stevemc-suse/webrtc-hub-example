@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: webrtc-hub
+  name: webrtc-hub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webrtc-hub
+  template:
+    metadata:
+      labels:
+        app: webrtc-hub
+    spec:
+      containers:
+      - name: webrtc-hub
+        image: ghcr.io/diconico07/webrtc-hub-example:latest
+        imagePullPolicy: IfNotPresent
+        command: ['./webrtc-hub']
+        ports:
+        - containerPort: 8080
+          name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webrtc-hub
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: webrtc-hub

@@ -1,0 +1,32 @@
+apiVersion: akri.sh/v0
+kind: Configuration
+metadata:
+  name: udev-camera
+  namespace: akri-discovered
+spec:
+  brokerProperties: {}
+  brokerSpec:
+    brokerPodSpec:
+      containers:
+      - image: registry.opensuse.org/home/nbelouin/webrtc-demo/images/gstreamer:latest
+        name: udev-camera
+        imagePullPolicy: Always
+        command: ['bash']
+        args: ['-c','gst-launch-1.0 -v libcamerasrc ! videoconvert ! clockoverlay !  vp8enc deadline=1 ! rtpvp8pay ! whipsink name=ws whip-endpoint="http://webrtc-hub.akri-discovered:8080/whip"']
+        resources:
+          limits:
+            '{{PLACEHOLDER}}': "1"
+            cpu: 300m
+            memory: 300Mi
+          requests:
+            '{{PLACEHOLDER}}': "1"
+            cpu: 100m
+            memory: 100Mi
+        securityContext:
+          privileged: false
+  capacity: 1
+  discoveryHandler:
+    discoveryDetails: |
+      udevRules:
+      - KERNEL=="video[0-9]*", ENV{ID_V4L_CAPABILITIES}==":capture:"
+    name: udev

@@ -1,0 +1,51 @@
+apiVersion: akri.sh/v0
+kind: Configuration
+metadata:
+  name: udev-display
+spec:
+  brokerProperties: {}
+  brokerSpec:
+    brokerPodSpec:
+      containers:
+        - name: wallboard   
+          env:
+            - name: URL
+              value: http://webrtc-hub.akri-discovered:8080 
+            - name: DISPLAY
+              value: ':0'
+          image: registry.opensuse.org/home/atgracey/wallboardos/15.4/firefox:latest
+          imagePullPolicy: Always
+          securityContext:
+            runAsUser: 1000
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+            - mountPath: /home/user/
+              name: home
+            - mountPath: /root/
+              name: home
+        - name: x11
+          image: registry.opensuse.org/home/atgracey/wallboardos/15.4/x11:icewm
+          imagePullPolicy: Always
+          securityContext:
+            allowPrivilegeEscalation: true
+            privileged: true
+            readOnlyRootFilesystem: false
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+            - mountPath: /root
+              name: home
+      dnsPolicy: ClusterFirst
+      terminationGracePeriodSeconds: 5
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: home
+          emptyDir: {}
+  capacity: 1
+  discoveryHandler:
+    discoveryDetails: |
+      udevRules:
+        - SUBSYSTEM=="drm", ATTR{status}=="connected"
+      name: udev
