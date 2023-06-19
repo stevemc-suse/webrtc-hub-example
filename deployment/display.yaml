@@ -48,4 +48,4 @@ spec:
     discoveryDetails: |
       udevRules:
         - SUBSYSTEM=="drm", ATTR{status}=="connected"
-      name: udev
+    name: udev
