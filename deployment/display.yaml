@@ -2,6 +2,7 @@ apiVersion: akri.sh/v0
 kind: Configuration
 metadata:
   name: udev-display
+  namespace: akri-discovered
 spec:
   brokerProperties: {}
   brokerSpec:
