@@ -5,6 +5,7 @@ metadata:
   labels:
     app: webrtc-hub
   name: webrtc-hub
+  namespace: akri-discovered
 spec:
   replicas: 1
   selector:
@@ -28,6 +29,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: webrtc-hub
+  namespace: akri-discovered
 spec:
   type: ClusterIP
   ports:
