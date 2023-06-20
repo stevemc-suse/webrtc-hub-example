@@ -12,7 +12,7 @@ spec:
         name: udev-camera
         imagePullPolicy: Always
         command: ['bash']
-        args: ['-c','gst-launch-1.0 -v v4l2src device=${!UDEV_DEVNODE_@} ! videoconvert ! clockoverlay !  vp8enc deadline=1 ! rtpvp8pay ! whipsink name=ws whip-endpoint="http://webrtc-hub.akri-discovered:8080/whip"']
+        args: ['-c','gst-launch-1.0 -v v4l2src device=${UDEV_DEVNODE_@} ! videoconvert ! clockoverlay !  vp8enc deadline=1 ! rtpvp8pay ! whipsink name=ws whip-endpoint="http://webrtc-hub.akri-discovered:8080/whip"']
         resources:
           limits:
             '{{PLACEHOLDER}}': "1"
