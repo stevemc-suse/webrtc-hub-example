@@ -11,7 +11,8 @@ spec:
         - name: wallboard   
           env:
             - name: URL
-              value: http://webrtc-hub.akri-discovered:8080 
+              #value: http://webrtc-hub.akri-discovered:8080
+              value: https://www.suse.com
             - name: DISPLAY
               value: ':0'
           image: registry.opensuse.org/home/atgracey/wallboardos/15.4/firefox:latest
